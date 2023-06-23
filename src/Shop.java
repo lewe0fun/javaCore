@@ -2,31 +2,18 @@ import Data.Customer;
 import Data.Order;
 import Data.Product;
 import Exceptions.*;
+import db.DB;
 import utils.ParseCheckInput;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Shop {
-    static Customer[] customers = null;
-    static Product[] products = null;
+
     static int orderLimit = 0;
 
-    public static void main(String[] args) throws CustomerException, AmountException, ProductException {
-        customers = new Customer[]{
-                new Customer("Ivan", "ivanov", 26, "+654987"),
-                new Customer("QWer", "Rsvg", 32, "+65436547")
-        };
-        products = new Product[]{
-                new Product("Milk", 100.5f),
-                new Product("Coffee", 125.5f),
-                new Product("Beer", 200.5f),
-                new Product("Sugar", 108.5f),
-                new Product("Bread", 80.5f),
-                new Product("Salt", 1.5f)
-        };
+    public static void ordering(){
 
-        Order[] orders = new Order[5];
+        Order[] orders = DB.getOrders();
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("Enter separated by spaces:\ncustomer phone number/product title/product amount, or exit");
@@ -45,7 +32,11 @@ public class Shop {
                     orderLimit--;
                     break;
                 } catch (AmountException e) {
-                    orders[orderLimit] = makePurchase(order[0], order[1], 1);
+                    try{orders[orderLimit] = makePurchase(order[0], order[1], 1);}
+                    catch (ProductException | CustomerException | AmountException ex)
+                    {
+                        System.out.println(ex.getMessage());
+                    }
                 }
             } catch (WrongNumberOfArgumentsException | WrongArgumentException e) {
                 System.out.println(e.getMessage());
@@ -63,12 +54,12 @@ public class Shop {
         Customer customer = null;
         Product product = null;
 
-        for (Customer c : customers) {
+        for (Customer c : DB.getCustomers()) {
             if (c.getPhone().equals(phone)) {
                 customer = c;
             }
         }
-        for (Product p : products) {
+        for (Product p : DB.getProducts()) {
             if (p.getTitle().equals(title)) {
                 product = p;
             }
