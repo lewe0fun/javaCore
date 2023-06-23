@@ -31,6 +31,14 @@ public class Order {
         return quantity;
     }
 
+    @Override
+    public String toString() {
+        return "Order ~~  " +
+                "customer phone:" + customer.getPhone() +
+                ", product title:" + product.getTitle() +
+                ", quantity:" + quantity;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
