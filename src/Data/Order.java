@@ -4,11 +4,13 @@ public class Order {
     private Customer customer;
     private Product product;
     private int quantity;
+    private float finalPrice;
 
     public Order(Customer customer, Product product, int quantity) {
         this.customer = customer;
         this.product = product;
         this.quantity = quantity;
+        this.finalPrice =product.getPrice()*quantity;
     }
 
     public Customer getCustomer() {
@@ -36,10 +38,20 @@ public class Order {
         return "Order ~~  " +
                 "customer phone:" + customer.getPhone() +
                 ", product title:" + product.getTitle() +
-                ", quantity:" + quantity;
+                ", quantity:" + quantity +
+                ", product price:" + product.getPrice() +
+                ", final price:" + finalPrice;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public float getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(float finalPrice) {
+        this.finalPrice = finalPrice;
     }
 }
