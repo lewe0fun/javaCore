@@ -1,3 +1,4 @@
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +11,26 @@ import java.util.stream.Stream;
 public class Main {
     public static void main(String[] args) {
         backup("./testFolder", "./Backup");
+        int[] arr = {0, 1, 2, 3, 0, 1, 2, 3, 0};
+        try {
+            writeBytesToFile(arr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static void writeBytesToFile(int[] arr) throws IOException {
+        FileOutputStream fos = new FileOutputStream("save1.txt");
+        for (int i = 0; i < 3; i++) {
+            byte b = 0;
+            for (int j = 0; j < 3; j++) {
+                b += arr[3 * i + j] << (j * 2);
+            }
+            fos.write(b);
+        }
+        fos.flush();
+        fos.close();
+    }
     public static void backup(String source, String target) {
         Path pathSource = Paths.get(source);
         List<Path> paths;
